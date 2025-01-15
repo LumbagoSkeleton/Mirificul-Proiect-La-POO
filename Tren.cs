@@ -6,61 +6,61 @@ using System.Threading.Tasks;
 
 namespace Proiect_Poo
 {
-    // adauga o functie sa calculezi pretul in functie de distanta sau ceva idk
-    internal abstract class Tren
+    // adauga o functie sa calculezi pretul in functie de distanta sau ceva
+    internal class Tren
     {
         private string id;
-        private int numar_tren;
-        private int capacitate_tren = 0;
-        private float pret = 0;
+        private int numarTren;
+        internal int capacitateTren = 0;
+        internal int numarCalatori = 0;
+        internal float pret { get; set; }
         private List<Vagon> listaVagoane;
         internal string GetTrenId() => id;
-        internal int Getnumar_tren() => numar_tren;
+        internal int GetNumar_tren() => numarTren;
         internal List<Vagon> GetlistaVagoane() => listaVagoane;
-        
-        public Tren (string id, int numar_tren)
+        public Tren (string id, int numarTren)
         {
             this.id = id;
-            this.numar_tren= numar_tren;
+            this.numarTren= numarTren;
             listaVagoane = new List<Vagon>();
         }
 
-        public void addVagon(int capacitate_vagon, int numar_vagon, int clasa)
+        public void addVagon(int capacitateVagon, int numarVagon, int clasa, int numarRanduri, int numarLocuriPeRand)
         {
             // adauga un singur vagon cu capacitatea ca primul parametru
-            Vagon aux =new Vagon(capacitate_vagon, numar_vagon,clasa);
+            Vagon aux =new Vagon(capacitateVagon, numarVagon, clasa, numarRanduri, numarLocuriPeRand );
             listaVagoane.Add(aux);
-            capacitate_tren=capacitate_tren+capacitate_vagon;
+            capacitateTren=capacitateTren+capacitateVagon;
         }
-        public void addVagons(List<int> capacitate_vagon, List<int> numere_vagon,List<int> clase)
+        public void addVagons(List<int> capacitateVagon, List<int> numereVagon,List<int> clase, List<int> numereRanduri, List<int> numereLocuriPeRand)
         {
             // adauga mai multe vagoane, fiecare parametru e o lista
             
-            for(int i=0;i<numere_vagon.Count;i++)
+            for(int i=0;i<numereVagon.Count;i++)
             {
-                Vagon aux = new Vagon(capacitate_vagon[i], numere_vagon[i], clase[i]);
+                Vagon aux = new Vagon(capacitateVagon[i], numereVagon[i], clase[i], numereRanduri[i], numereLocuriPeRand[i]);
                 listaVagoane.Add(aux);
-                capacitate_tren = capacitate_tren + capacitate_vagon[i];
+                capacitateTren = capacitateTren + capacitateVagon[i];
             }
         }
-        public void removeVagons(List<int> numere_vagon)
+        public void removeVagons(List<int> numereVagon)
         {
-            //sterge vagoanele cu numarul specificat din tren (numerele vagoanelor sunt trimise printr o lista)
-            foreach(int i in numere_vagon)
+            //sterge vagoanele cu numarul specificat din tren (numerele vagoanelor sunt trimise printr-o lista)
+            foreach(int i in numereVagon)
             {
                foreach(Vagon j in listaVagoane)
-                    if (i==j.getNumarVagon())
+                    if (i==j.getnumarVagon())
                     {
                         listaVagoane.Remove(j);
                         break;
                     }
             }
         }
-        public void removeVagon(int numar_vagon)
+        public void removeVagon(int numarVagon)
         {
             // sterge vagonul cu numarul specificat din tren
             foreach (Vagon j in listaVagoane)
-                if (numar_vagon == j.getNumarVagon())
+                if (numarVagon == j.getnumarVagon())
                 {
                     listaVagoane.Remove(j);
                     break;
@@ -69,7 +69,7 @@ namespace Proiect_Poo
 
         public void AfisareTren()
         {
-            Console.WriteLine($"    * Tren cu id-ul: {id}, numarul trenului: {numar_tren}, capacitatea trenului: {capacitate_tren}, si pretul: {pret}");
+            Console.WriteLine($"    * Tren cu id-ul: {id}, numarul trenului: {numarTren}, capacitatea trenului: {capacitateTren}, si pretul: {pret}");
             foreach (Vagon j in listaVagoane)
             {
                 j.AfisareVagon();
