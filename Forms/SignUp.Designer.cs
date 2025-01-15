@@ -29,21 +29,21 @@
         private void InitializeComponent()
         {
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.prenumeTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.numeTextBox = new System.Windows.Forms.TextBox();
             this.signupButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.emailTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.varstaTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.parolaTextBox2 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.parolaTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.ListaRoluri = new System.Windows.Forms.ListBox();
             this.errorLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -56,12 +56,12 @@
             this.label2.TabIndex = 12;
             this.label2.Text = "Prenume";
             // 
-            // textBox2
+            // prenumeTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(324, 119);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(249, 22);
-            this.textBox2.TabIndex = 11;
+            this.prenumeTextBox.Location = new System.Drawing.Point(324, 119);
+            this.prenumeTextBox.Name = "prenumeTextBox";
+            this.prenumeTextBox.Size = new System.Drawing.Size(249, 22);
+            this.prenumeTextBox.TabIndex = 11;
             // 
             // label1
             // 
@@ -73,12 +73,12 @@
             this.label1.Text = "Nume";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // textBox1
+            // numeTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(324, 91);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(249, 22);
-            this.textBox1.TabIndex = 9;
+            this.numeTextBox.Location = new System.Drawing.Point(324, 91);
+            this.numeTextBox.Name = "numeTextBox";
+            this.numeTextBox.Size = new System.Drawing.Size(249, 22);
+            this.numeTextBox.TabIndex = 9;
             // 
             // signupButton
             // 
@@ -99,12 +99,12 @@
             this.label3.TabIndex = 16;
             this.label3.Text = "Adresa e-mail";
             // 
-            // textBox3
+            // emailTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(324, 175);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(249, 22);
-            this.textBox3.TabIndex = 15;
+            this.emailTextBox.Location = new System.Drawing.Point(324, 175);
+            this.emailTextBox.Name = "emailTextBox";
+            this.emailTextBox.Size = new System.Drawing.Size(249, 22);
+            this.emailTextBox.TabIndex = 15;
             // 
             // label4
             // 
@@ -115,12 +115,12 @@
             this.label4.TabIndex = 14;
             this.label4.Text = "Varsta";
             // 
-            // textBox4
+            // varstaTextBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(324, 147);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(249, 22);
-            this.textBox4.TabIndex = 13;
+            this.varstaTextBox.Location = new System.Drawing.Point(324, 147);
+            this.varstaTextBox.Name = "varstaTextBox";
+            this.varstaTextBox.Size = new System.Drawing.Size(249, 22);
+            this.varstaTextBox.TabIndex = 13;
             // 
             // label5
             // 
@@ -141,13 +141,13 @@
             this.label6.TabIndex = 21;
             this.label6.Text = "Confirmarea\r\nparolei";
             // 
-            // textBox5
+            // parolaTextBox2
             // 
-            this.textBox5.Location = new System.Drawing.Point(324, 243);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.PasswordChar = '*';
-            this.textBox5.Size = new System.Drawing.Size(249, 22);
-            this.textBox5.TabIndex = 20;
+            this.parolaTextBox2.Location = new System.Drawing.Point(324, 243);
+            this.parolaTextBox2.Name = "parolaTextBox2";
+            this.parolaTextBox2.PasswordChar = '*';
+            this.parolaTextBox2.Size = new System.Drawing.Size(249, 22);
+            this.parolaTextBox2.TabIndex = 20;
             // 
             // label7
             // 
@@ -158,13 +158,13 @@
             this.label7.TabIndex = 19;
             this.label7.Text = "Parola";
             // 
-            // textBox6
+            // parolaTextBox
             // 
-            this.textBox6.Location = new System.Drawing.Point(324, 203);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.PasswordChar = '*';
-            this.textBox6.Size = new System.Drawing.Size(249, 22);
-            this.textBox6.TabIndex = 18;
+            this.parolaTextBox.Location = new System.Drawing.Point(324, 203);
+            this.parolaTextBox.Name = "parolaTextBox";
+            this.parolaTextBox.PasswordChar = '*';
+            this.parolaTextBox.Size = new System.Drawing.Size(249, 22);
+            this.parolaTextBox.TabIndex = 18;
             // 
             // label8
             // 
@@ -175,26 +175,26 @@
             this.label8.TabIndex = 22;
             this.label8.Text = "Rol";
             // 
-            // listBox1
+            // ListaRoluri
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Items.AddRange(new object[] {
+            this.ListaRoluri.FormattingEnabled = true;
+            this.ListaRoluri.ItemHeight = 16;
+            this.ListaRoluri.Items.AddRange(new object[] {
             "Calator",
             "Administrator"});
-            this.listBox1.Location = new System.Drawing.Point(324, 277);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(249, 36);
-            this.listBox1.TabIndex = 23;
+            this.ListaRoluri.Location = new System.Drawing.Point(324, 277);
+            this.ListaRoluri.Name = "ListaRoluri";
+            this.ListaRoluri.Size = new System.Drawing.Size(249, 36);
+            this.ListaRoluri.TabIndex = 23;
             // 
             // errorLabel
             // 
             this.errorLabel.AutoSize = true;
             this.errorLabel.ForeColor = System.Drawing.Color.Red;
-            this.errorLabel.Location = new System.Drawing.Point(288, 335);
-            this.errorLabel.MinimumSize = new System.Drawing.Size(234, 17);
+            this.errorLabel.Location = new System.Drawing.Point(153, 335);
+            this.errorLabel.MinimumSize = new System.Drawing.Size(500, 17);
             this.errorLabel.Name = "errorLabel";
-            this.errorLabel.Size = new System.Drawing.Size(234, 17);
+            this.errorLabel.Size = new System.Drawing.Size(500, 17);
             this.errorLabel.TabIndex = 24;
             this.errorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.errorLabel.Click += new System.EventHandler(this.label9_Click);
@@ -205,21 +205,21 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 523);
             this.Controls.Add(this.errorLabel);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.ListaRoluri);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.parolaTextBox2);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.parolaTextBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.emailTextBox);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.varstaTextBox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.prenumeTextBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.numeTextBox);
             this.Controls.Add(this.signupButton);
             this.Name = "SignUp";
             this.Text = "SignUp";
@@ -231,21 +231,21 @@
 
         #endregion
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox prenumeTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox numeTextBox;
         private System.Windows.Forms.Button signupButton;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox emailTextBox;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox varstaTextBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox parolaTextBox2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox parolaTextBox;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox ListaRoluri;
         private System.Windows.Forms.Label errorLabel;
     }
 }

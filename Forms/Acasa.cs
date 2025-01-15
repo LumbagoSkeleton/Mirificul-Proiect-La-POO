@@ -12,12 +12,19 @@ namespace WindowsFormsApp1.Forms
 {
     public partial class Acasa : Form
     {
-        public Acasa()
+        private bool admin;
+        public Acasa(bool admin)
         {
+            this.admin = admin;
             InitializeComponent();
         }
 
         private void Acasa_Load(object sender, EventArgs e)
+        {
+            if (!admin) { gestionare.Hide(); }
+        }
+
+        private void gestionare_Click(object sender, EventArgs e)
         {
 
         }

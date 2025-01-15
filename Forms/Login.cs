@@ -32,7 +32,7 @@ namespace WindowsFormsApp1.Forms
         private string ValidareDate()
         {
 
-            if (textBox1.Text == null || textBox2.Text == null) // campuri libere
+            if (textBox1.Text == "" || textBox2.Text == "") // campuri libere
             {
                 return "Trebuie completate toate campurile!";
             }
@@ -50,7 +50,7 @@ namespace WindowsFormsApp1.Forms
             }
             else
             {
-                Acasa acasa = new Acasa(); acasa.Show(); Hide();
+                Acasa acasa = new Acasa(false); acasa.Show(); Hide();
             }
         }
 

@@ -28,18 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.profil = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.rezervareRuta = new System.Windows.Forms.Button();
+            this.gestionare = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // profil
             // 
-            this.button1.Location = new System.Drawing.Point(661, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(116, 55);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Profil";
-            this.button1.UseVisualStyleBackColor = true;
+            this.profil.Location = new System.Drawing.Point(681, 27);
+            this.profil.Name = "profil";
+            this.profil.Size = new System.Drawing.Size(96, 55);
+            this.profil.TabIndex = 0;
+            this.profil.Text = "Profil";
+            this.profil.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -51,13 +53,34 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Pagina principala";
             // 
+            // rezervareRuta
+            // 
+            this.rezervareRuta.Location = new System.Drawing.Point(579, 28);
+            this.rezervareRuta.Name = "rezervareRuta";
+            this.rezervareRuta.Size = new System.Drawing.Size(96, 55);
+            this.rezervareRuta.TabIndex = 2;
+            this.rezervareRuta.Text = "Rezerva ruta";
+            this.rezervareRuta.UseVisualStyleBackColor = true;
+            // 
+            // gestionare
+            // 
+            this.gestionare.Location = new System.Drawing.Point(452, 28);
+            this.gestionare.Name = "gestionare";
+            this.gestionare.Size = new System.Drawing.Size(121, 55);
+            this.gestionare.TabIndex = 3;
+            this.gestionare.Text = "Optiuni administrator";
+            this.gestionare.UseVisualStyleBackColor = true;
+            this.gestionare.Click += new System.EventHandler(this.gestionare_Click);
+            // 
             // Acasa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.gestionare);
+            this.Controls.Add(this.rezervareRuta);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.profil);
             this.Name = "Acasa";
             this.Text = "Acasa";
             this.Load += new System.EventHandler(this.Acasa_Load);
@@ -68,7 +91,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button profil;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button rezervareRuta;
+        private System.Windows.Forms.Button gestionare;
     }
 }
