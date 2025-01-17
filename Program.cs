@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.IO;
+using System.Text.Json;
 
 namespace Proiect_Poo;
 
@@ -117,8 +118,8 @@ class Program
 
         ListaDeRuteMici listaRuteMici = new ListaDeRuteMici();
 
-        listaRuteMici.AdaugareRutaMica(rutaIntreDouaStatiiDvCraiova);
-        listaRuteMici.AdaugareRuteMici(new List<RutaIntreDouaStatii> { rutaIntreDouaStatiiHdDv,rutaIntreDouaStatiiCraiovaBucuresti });
+        listaRuteMici.AdaugareRutaMica(rutaIntreDouaStatiiHdDv);
+        listaRuteMici.AdaugareRuteMici(new List<RutaIntreDouaStatii> { rutaIntreDouaStatiiDvCraiova,rutaIntreDouaStatiiCraiovaBucuresti });
 
         // Declarare variabile pentru citire date personale si variablie pentru statii
         
@@ -167,17 +168,24 @@ class Program
         //ruta2.durata.DataSosire = ruta2.getRuteMici()[ruta2.getRuteMici().Count - 1].Orar.DataSosire;
         
         ruteMari.AdaugaRuteMari(new List<Ruta>(){ruta1, ruta2});
+
+        RuteFavorite RuteFav = new RuteFavorite();
         
         Console.WriteLine("");
         
         while (true) // meniu consola pentru debugging
         {
             Console.WriteLine("  | MENIU DEBUGGING | \n" +
-                              "1) Creati o rezervare automata ( o persoana sau mai multe )\n" +
-                              "2) Renuntati la o rezervare!\n" +
-                              "3) Cautare rute tren disponibile intre doua statii... \n" +
-                              "4) Vizualizare istoric calatori\n" +
-                              "5) Rezervare pe un loc dorit ( o persoana sau mai multe )");
+                              "1) Creati o rezervare automata ( o persoana sau mai multe );\n" +
+                              "2) Renuntati la o rezervare;\n" +
+                              "3) Cautare rute tren disponibile intre doua statii...; \n" +
+                              "4) Vizualizare istoric calatori;\n" +
+                              "5) Rezervare pe un loc dorit ( o persoana sau mai multe );\n" +
+                              "6) Salvarea unei Rute Mici la Favorite;\n" +
+                              "7) Salvarea unei Rute Mari la Favorite;\n" +
+                              "8) Stergerea unei Rute Mici de la Favorite;\n" +
+                              "9) Stergerea unei Rute Mari de la Favorite;\n" +
+                              "10) Afisarea tuturor rutelor favorite.");
             
 
             // tipMoneda == 0 euro
@@ -241,6 +249,8 @@ class Program
             {
                 case 1:
                     
+                    // afisare locuri disp;
+                    
                     Console.Write(" | INPUT | Doriti sa faceti rezervarea pentru un calator sau pentru mai multi? ( 0 - pentru unu / 1 - pentru mai multi): ");
                     
                     intrareValida = false;
@@ -301,7 +311,7 @@ class Program
                         }
                         
                         Console.WriteLine("");
-                        listaRuteMici.AfisareListaStatiiIntermediare();
+                        listaRuteMici.AfisareListaStatiiIntermediare(listaRuteMici.GetRuteMici(), monedaWrapper.TipMoneda);
                         Console.WriteLine("");
                         
                         Console.WriteLine("");
@@ -414,7 +424,7 @@ class Program
                                 }
                                 
                                 Console.WriteLine("");
-                                listaRuteMici.AfisareListaStatiiIntermediare();
+                                listaRuteMici.AfisareListaStatiiIntermediare(listaRuteMici.GetRuteMici(),monedaWrapper.TipMoneda);
                                 Console.WriteLine("");
                                 Console.WriteLine(" | INPUT | Alegeti ruta dorita pe care doriti sa faceti rezervarea prin introducerea statiilor: ");
 
@@ -498,7 +508,7 @@ class Program
                     break;
                 
                 case 3:
-                    listaRuteMici.AfisareListaStatiiIntermediare();
+                    listaRuteMici.AfisareListaStatiiIntermediare(listaRuteMici.GetRuteMici(),monedaWrapper.TipMoneda);
                     Console.WriteLine(" | OUTPUT | Afisare rute mari: ");
                         
                     ruteMari.AfisareRuteMari(monedaWrapper.TipMoneda);
@@ -517,14 +527,11 @@ class Program
                     {
                         Console.WriteLine();
                         var ListaGasitaRuteMici = listaRuteMici.CautareRuteMiciDisponibile(st1, st2, monedaWrapper.TipMoneda);
+                        
+                        // daca a gasic conexiuni de rute mici
 
-                        if (ListaGasitaRuteMici.Count >= 1)
-                        {
-                            // daca a gasic conexiuni de rute mici
-
-                            //Console.WriteLine("Conexiune gasita! Afisare lista statii intermediare!");
-                            listaRuteMici.AfisareListaStatiiIntermediare(ListaGasitaRuteMici);
-                        }
+                        //Console.WriteLine("Conexiune gasita! Afisare lista statii intermediare!");
+                        listaRuteMici.AfisareListaStatiiIntermediare(ListaGasitaRuteMici, monedaWrapper.TipMoneda);
                         
                         // Cautare ruta mare 
 
@@ -704,7 +711,7 @@ class Program
 
 
                             Console.WriteLine("");
-                            listaRuteMici.AfisareListaStatiiIntermediare();
+                            listaRuteMici.AfisareListaStatiiIntermediare(monedaWrapper.TipMoneda);
                             Console.WriteLine("");
                             Console.WriteLine(" | INPUT | Alegeti ruta dorita pe care doriti sa faceti rezervarea prin introducerea statiilor: ");
 
@@ -844,7 +851,7 @@ class Program
                                         }
                                     }
                                     Console.WriteLine("");
-                                    listaRuteMici.AfisareListaStatiiIntermediare();
+                                    listaRuteMici.AfisareListaStatiiIntermediare(monedaWrapper.TipMoneda);
                                     Console.WriteLine("");
                                     Console.WriteLine(" | INPUT | Alegeti ruta dorita pe care doriti sa faceti rezervarea prin introducerea statiilor: ");
 
@@ -870,9 +877,185 @@ class Program
                             }
                         }
                         break;
-                default:
+                 
+                 case 6:
+                     
+                    listaRuteMici.AfisareListaStatiiIntermediare(monedaWrapper.TipMoneda);
+                    
+                    Console.WriteLine("\n | INPUT | Introduceti cele doua statii pentru gasirea rutei si salvarea la favorite: ");
+
+                    Console.Write(" | INPUT | Statia 1: ");
+                    sst1= Console.ReadLine();
+                    Console.Write(" | INPUT | Statia 2: ");
+                    sst2= Console.ReadLine();
+
+                    st1= statii.Find(s => s.NumeStatie == sst1);
+                    st2= statii.Find(s => s.NumeStatie == sst2);
+
+                    if (st1 != null && st2 != null)
+                    {
+                        Console.WriteLine();
+                        var rez2 = listaRuteMici.DisponibilitateRutaFiz(st1, st2);
+
+                        if (rez2 != null)
+                        {
+                            Console.WriteLine(" | SUCCEEDED | S-a gasit ruta mica respectiva! Adaugata la favorite.");
+                            RuteFav.AdaugareRutaIntreDouaStatiiFav(rez2);
+                            RuteFav.AfisareRuteMiciFav(monedaWrapper.TipMoneda);
+                        }
+                        else
+                        {
+                            Console.WriteLine(" | FAILED | Nu s-a gasit ruta mica respectiva!");
+                        }
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine(" | INFO | Reintroduceti optiunea 1 pt. a reintroduce statiile corect. O statie invalida sau amandoua!\n");
+                    }
+                    break;
+                 
+                 case 7:
+                     
+                    Console.WriteLine(" | OUTPUT | Afisare rute mari: ");
+                        
+                    ruteMari.AfisareRuteMari(monedaWrapper.TipMoneda);
+                    
+                    Console.WriteLine("\n | INPUT | Introduceti cele doua statii pentru gasirea rutei si salvarea la favorite: ");
+
+                    Console.Write(" | INPUT | Statia 1: ");
+                    sst1= Console.ReadLine();
+                    Console.Write(" | INPUT | Statia 2: ");
+                    sst2= Console.ReadLine();
+
+                    st1= statii.Find(s => s.NumeStatie == sst1);
+                    st2= statii.Find(s => s.NumeStatie == sst2);
+
+                    if (st1 != null && st2 != null)
+                    {
+                        // Cautare ruta mare 
+
+                        var rez = ruteMari.CautareRutaMare(st1, st2);
+
+                        if (rez != null)
+                        {
+                            Console.WriteLine(" | SUCCEEDED | S-a gasit ruta mare respectiva! Adaugata la favorite.");
+                            RuteFav.AdaugareRutaMareFav(rez);
+                            RuteFav.AfisareRuteMariFav(monedaWrapper.TipMoneda);
+                        }
+                        else
+                        {
+                            Console.WriteLine(" | FAILED | Nu s-a gasit ruta mare respectiva! Cel mai prob. exista conexiuni");
+                        }
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine(" | INFO | Reintroduceti optiunea 1 pt. a reintroduce statiile corect. O statie invalida sau amandoua!\n");
+                    }
+
+                    break;
+                 
+                 case 8:
+                     
+                     // stergere ruta mica din favorite
+                     
+                     Console.WriteLine(" | OUTPUT | Afisare lista Rute Mici Favorite: ");
+                     
+                     RuteFav.AfisareRuteMiciFav(monedaWrapper.TipMoneda);
+                    
+                     Console.WriteLine("\n | INPUT | Introduceti cele doua statii pentru gasirea rutei si salvarea la favorite: ");
+
+                     Console.Write(" | INPUT | Statia 1: ");
+                     sst1= Console.ReadLine();
+                     Console.Write(" | INPUT | Statia 2: ");
+                     sst2= Console.ReadLine();
+
+                     st1= statii.Find(s => s.NumeStatie == sst1);
+                     st2= statii.Find(s => s.NumeStatie == sst2);
+
+                     if (st1 != null && st2 != null)
+                     {
+                         Console.WriteLine();
+                         var rez2 = listaRuteMici.DisponibilitateRutaFiz(st1, st2);
+
+                         if (rez2 != null)
+                         {
+                             Console.WriteLine(" | SUCCEEDED | S-a gasit ruta mica respectiva! Stergerea rutei de la favorite.");
+                             RuteFav.StergereRutaIntreDouaStatiiFav(rez2);
+                             RuteFav.AfisareRuteMiciFav(monedaWrapper.TipMoneda);
+                         }
+                         else
+                         {
+                             Console.WriteLine(" | FAILED | Nu s-a gasit ruta mica respectiva!");
+                         }
+                         Console.WriteLine();
+                     }
+                     else
+                     {
+                         Console.WriteLine(" | INFO | Reintroduceti optiunea 1 pt. a reintroduce statiile corect. O statie invalida sau amandoua!\n");
+                     }
+                     
+                     break;
+                 
+                 case 9:
+                     
+                     // stergere ruta mare din favorite
+                     
+                     Console.WriteLine(" | OUTPUT | Afisare lista Rute Mare Favorite: ");
+                     
+                     RuteFav.AfisareRuteMariFav(monedaWrapper.TipMoneda);
+                    
+                     Console.WriteLine("\n | INPUT | Introduceti cele doua statii pentru gasirea rutei si salvarea la favorite: ");
+
+                     Console.Write(" | INPUT | Statia 1: ");
+                     sst1= Console.ReadLine();
+                     Console.Write(" | INPUT | Statia 2: ");
+                     sst2= Console.ReadLine();
+
+                     st1= statii.Find(s => s.NumeStatie == sst1);
+                     st2= statii.Find(s => s.NumeStatie == sst2);
+
+                     if (st1 != null && st2 != null)
+                     {
+                         // Cautare ruta mare 
+
+                         var rez = ruteMari.CautareRutaMare(st1, st2);
+
+                         if (rez != null)
+                         {
+                             Console.WriteLine(" | SUCCEEDED | S-a gasit ruta mare respectiva! Stergerea rutei de la favorite.");
+                             RuteFav.StergereRutaMareFav(rez);
+                             RuteFav.AfisareRuteMariFav(monedaWrapper.TipMoneda);
+                         }
+                         else
+                         {
+                             Console.WriteLine(" | FAILED | Nu s-a gasit ruta mare respectiva! Cel mai prob. exista conexiuni");
+                         }
+                         Console.WriteLine();
+                     }
+                     else
+                     {
+                         Console.WriteLine(" | INFO | Reintroduceti optiunea 1 pt. a reintroduce statiile corect. O statie invalida sau amandoua!\n");
+                     }
+
+                     break;
+                 case 10:   
+                     
+                    // afisarea tuturor rutelor favorite;
+                    
+                    Console.WriteLine("\n | Afisarea tuturor rutelor favorite | \n");
+                     
+                    RuteFav.AfisareRuteMiciFav(monedaWrapper.TipMoneda);
+                    Console.WriteLine();
+                    RuteFav.AfisareRuteMariFav(monedaWrapper.TipMoneda);
+                    Console.WriteLine();
+                    
+                    break;
+                 default:
                         Console.WriteLine("Optiune invalida!");
                         break;
+                 
             }
         }
     }

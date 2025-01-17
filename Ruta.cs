@@ -197,7 +197,7 @@ namespace Proiect_Poo
             foreach (var rutaMica in getRuteMici())
             {
                 rutaMica.StatiiIntermediare.AfisareStatii();
-                rutaMica.AfisareDetaliiRuta();
+                rutaMica.AfisareDetaliiRuta(tipMoneda);
             }
         }
     }

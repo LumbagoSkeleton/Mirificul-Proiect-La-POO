@@ -42,6 +42,7 @@ internal class RutaIntreDouaStatii
 
     public StatiiIntermediare StatiiIntermediare { get; set; }
     private string Id;
+    internal float Cost { get; set; }
     public Orar Orar;
     public TimeSpan Durata;
     internal string NumeRuta { get; set; }
@@ -60,7 +61,7 @@ internal class RutaIntreDouaStatii
     {
 
     }
-    public RutaIntreDouaStatii(string id, StatiiIntermediare statiiIntermediare, Orar orar, float distanta, bool rutaActiva, List<Tren> trenuriDisponibile, List<Calator> listaCalatori  )
+    public RutaIntreDouaStatii(string id, StatiiIntermediare statiiIntermediare, Orar orar, float distanta, bool rutaActiva, List<Tren> trenuriDisponibile, List<Calator> listaCalatori)
     {
         TrenuriDisponibile = trenuriDisponibile;
         StatiiIntermediare = statiiIntermediare;
@@ -83,6 +84,7 @@ internal class RutaIntreDouaStatii
         TimeSpan diff= Orar.DataSosire - Orar.DataPlecare;;
         Durata = diff; 
         Id = id;
+        Cost = cost;
         RutaActiva = true;
         ListaCalatori = new List<Calator>();
         this.distanta= 0;
@@ -95,6 +97,7 @@ internal class RutaIntreDouaStatii
         TimeSpan diff= Orar.DataSosire - Orar.DataPlecare;
         Durata = diff; 
         Id = id;
+        Cost = cost;
         RutaActiva = true;
         ListaCalatori = new List<Calator>();
         this.distanta= distanta;
@@ -147,11 +150,34 @@ internal class RutaIntreDouaStatii
         Console.WriteLine("");
     }
     
-    public void AfisareDetaliiRuta()
+    public void AfisareDetaliiRuta(int tipMoneda)
     {
+        MonedaDollar d = new MonedaDollar();
+        MonedaEuro eu = new MonedaEuro();
+        MonedaLei l = new MonedaLei();
+        
         Console.Write($"  * Detalii ruta:\n  - Orar: ");
         Orar.AfisareOrar();
         Console.WriteLine($"  - Durata: {Durata.Days} zile, {Durata.Hours} ore, {Durata.Minutes} minute.");
+        Console.WriteLine($"  - Distanta: {distanta} km");
+        if (tipMoneda == 0)
+        {
+            Console.WriteLine($"  - Cost: {eu.MonedaStr(Cost)}");
+        }
+        else
+        {
+            if (tipMoneda == 1)
+            {
+                Console.WriteLine($"  - Cost: {l.MonedaStr(Cost)}");
+            }
+            else
+            {
+                if (tipMoneda == 2)
+                {
+                    Console.WriteLine($"  - Cost: {d.MonedaStr(Cost)}");
+                }
+            }
+        }
     }
     
     public Tren? GasesteTrenDupaId(string id)

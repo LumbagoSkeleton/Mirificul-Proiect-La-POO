@@ -66,7 +66,7 @@ internal class ListaDeRuteMici
             {
                 // Daca ruta curenta este activa si este una intre 2 statii ( ruta simpla )
                 ruta.AfisareTrenuriDisponibile(tipMoneda);
-                ruta.AfisareDetaliiRuta();
+                ruta.AfisareDetaliiRuta(tipMoneda);
                 lista.Add(ruta);
                 return lista;
             }
@@ -150,7 +150,7 @@ internal class ListaDeRuteMici
                 if (lr[i].StatiiIntermediare.Statie2.NumeStatie.CompareTo(statiaDeStart.NumeStatie) ==0  && lr[i].StatiiIntermediare.Statie1.NumeStatie.CompareTo(statiaDeSosire.NumeStatie)!=0) 
                 {
                     // daca a doua statie curenta este aceasi cu statia de start curenta dar prima statie curenta nu este aceasi cu statia de sosire curenta
-                    // inseamna ca suntem in parcurgerea RuteMicilor si mergem prin ele
+                    // inseamna ca suntem in parcurgerea Rutelor Mici si mergem prin ele
                     
                     ok2 = true; Index = i;
                     var statiaDeStartInit = statiaDeStart;
@@ -168,7 +168,7 @@ internal class ListaDeRuteMici
                 else
                 {
                     if (lr[i].StatiiIntermediare.Statie1.NumeStatie.CompareTo(statiaDeStart.NumeStatie) == 0 &&
-                        lr[i].StatiiIntermediare.Statie2.NumeStatie.CompareTo(statiaDeSosire.NumeStatie) == 0 && lr[i].RutaActiva == true)
+                        lr[i].StatiiIntermediare.Statie2.NumeStatie.CompareTo(statiaDeSosire.NumeStatie) == 0 )
                     {
                         // daca prima statie curenta este aceasi cu statia de start curenta iar a doua statie curenta este aceasi cu statia de sosire curenta
                         // inseamna ca suntem la finalul parcurgerii ( am ajuns la capat ) si at avem o lista de RuteMici valida
@@ -179,7 +179,7 @@ internal class ListaDeRuteMici
                     }
                     else
                     {
-                        if (lr[i].StatiiIntermediare.Statie2.NumeStatie.CompareTo(statiaDeStart.NumeStatie) == 0 && lr[i].StatiiIntermediare.Statie1.NumeStatie.CompareTo(statiaDeSosire.NumeStatie) == 0 && lr[i].RutaActiva == true)
+                        if (lr[i].StatiiIntermediare.Statie2.NumeStatie.CompareTo(statiaDeStart.NumeStatie) == 0 && lr[i].StatiiIntermediare.Statie1.NumeStatie.CompareTo(statiaDeSosire.NumeStatie) == 0)
                         {
                             // daca a doua statie curenta este aceasi cu statia de start curenta iar prima statie curenta este aceasi cu statia de sosire curenta
                             // inseamna ca suntem la finalul parcurgerii ( am ajuns la capat ) si at avem o lista de RuteMici valida
@@ -194,38 +194,43 @@ internal class ListaDeRuteMici
         return stop;
     }
 
-    internal void AfisareListaStatiiIntermediare()
+    internal void AfisareListaStatiiIntermediare(int tipMoneda)
     {
         foreach (var ruta in RuteMici)
         {
             ruta.StatiiIntermediare.AfisareStatii();
-            ruta.AfisareDetaliiRuta();
+            ruta.AfisareDetaliiRuta(tipMoneda);
         }
     }
     
-    internal List<(TimeSpan, float)> AfisareListaStatiiIntermediare(List<RutaIntreDouaStatii> RuteMici)
+    internal List<(TimeSpan, float, float)> AfisareListaStatiiIntermediare(List<RutaIntreDouaStatii> RuteMici, int tipMoneda)
     {
         // Afisare lista statii intermediare ale unor RuteMici date ca si paramentru si calcularea sumei totale si a duratei totale
         
         TimeSpan sumaDurata = TimeSpan.Zero;
+        float distTotal = 0;
         float sumaCost = 0;
         
         foreach (var r in RuteMici)
         {
             r.StatiiIntermediare.AfisareStatii();
-            r.AfisareDetaliiRuta();
+            r.AfisareDetaliiRuta(tipMoneda);
             sumaDurata += r.Durata;
+            distTotal += r.distanta;
+            sumaCost += r.Cost;
         }
-        Console.WriteLine($"Durata Totala: {sumaDurata} iar pretul total: {sumaCost}");
+        
+        Console.WriteLine($"  Durata Totala: Zile:{sumaDurata.Days}, ore: {sumaDurata.Hours}, min: {sumaDurata.Minutes} ; Pretul total: {sumaCost}, Distanta totala: {distTotal} km");
 
-        return new List<(TimeSpan, float)> { (sumaDurata, sumaCost) };
+        return new List<(TimeSpan, float, float)> { (sumaDurata, sumaCost, distTotal) };
     }
     
-    internal List<(TimeSpan, float)> AfisareListaStatiiIntermediare(List<StatiiIntermediare> lista)
+    internal List<(TimeSpan, float, float)> AfisareListaStatiiIntermediare(List<StatiiIntermediare> lista, int tipMoneda)
     {
         // Afisare lista statii intermediare date ca si paramentru si calcularea sumei totale si a duratei totale
         
         TimeSpan sumaDurata = TimeSpan.Zero;
+        float distTotal = 0;
         float sumaCost = 0;
         foreach (var st in lista)
         {
@@ -233,16 +238,21 @@ internal class ListaDeRuteMici
             var ruta = DisponibilitateRutaFiz(st.Statie1, st.Statie2);
             if (ruta != null)
             {
-                ruta.AfisareDetaliiRuta();
+                ruta.AfisareDetaliiRuta(tipMoneda);
+                sumaCost += ruta.Cost;
                 sumaDurata += ruta.Durata;
+                distTotal += ruta.distanta;
             }
             else
             {
                 Console.WriteLine(" Eroare de gasire ruta. ");
             }
         }
-        Console.WriteLine($"Durata Totala: {sumaDurata} iar pretul total: {sumaCost}");
-        return new List<(TimeSpan, float)> { (sumaDurata, sumaCost) };
+        
+        
+        Console.WriteLine($"Durata Totala: Zile:{sumaDurata.Days}, ore: {sumaDurata.Hours}, min: {sumaDurata.Minutes}; Pretul total: {sumaCost}, Distanta totala: {distTotal} km");
+        
+        return new List<(TimeSpan, float, float)> { (sumaDurata, sumaCost, distTotal) };
     }
     internal List<RutaIntreDouaStatii> GasireRutaComplexa(Statie St1, Statie St2)
     {
@@ -309,6 +319,45 @@ internal class ListaDeRuteMici
                             foreach (var loc in vag.locuri)
                                 if ((numarLoc == loc.numarLoc) && (loc.OcupareLoc == false))
                                 {
+                                    
+                                    Console.WriteLine(" | OUTPUT | A fost gasit locul pentru dvs! Se va afisa gradului de ocupare al vagonului ( x ocupat; - neocupat ): \n");
+                        
+                                    for (int i = 0; i < vag.locuri.Count; i++)
+                                    {
+                                        if (vag.locuri[i].OcupareLoc == false)
+                                        {
+                                            Console.Write($" Locul {i+1} - \n");
+                                        }
+                                        else
+                                        {
+                                            Console.Write($" Locul {i+1} x \n");
+                                        }
+                                    }
+
+                                    Console.WriteLine($"\n Nr. locuri vagon total: {vag.getcapacitateVagon()}; Nr. locuri vagon ocupate: {vag.numarCalatori}\n");
+
+                                    Console.Write(" | INPUT | Doriti sa mai faceti rezervarea? ( 1 - Da / 0 - Nu ): ");
+                        
+                                    int opt = 0;
+                                    bool intrareValida = false;
+                                    while (!intrareValida)
+                                    {
+                                        if (int.TryParse(Console.ReadLine(), out int value4))
+                                        {
+                                            intrareValida = true;
+                                            opt = value4;
+                                        }
+                                        else
+                                        {
+                                            Console.Write(" | ERROR | Optiune invalida! Reintroduceti optiunea : ");
+                                        }
+                                    }
+                        
+                                    if (opt == 0) {
+                                        Console.WriteLine(" | INFO | Anulare rezervare! ");
+                                        return;
+                                    }
+                                    
                                     ok = true;
                                     loc.OcupareLoc = true;
                                     Calator.idTren = tren.GetTrenId();
@@ -353,6 +402,33 @@ internal class ListaDeRuteMici
                         break;
                     if ((vag.numarCalatori < vag.getcapacitateVagon()) && vag.getclasa() == Calator.clasa) // daca avem locuri disp. in vagon si clasa vagonului dorita
                     {
+                        
+                        Console.WriteLine(" | OUTPUT | A fost gasit locul pentru dvs!");
+
+                        Console.WriteLine($"\n Nr. locuri vagon total: {vag.getcapacitateVagon()}; Nr. locuri vagon ocupate: {vag.numarCalatori}\n");
+
+                        Console.Write(" | INPUT | Doriti sa mai faceti rezervarea? ( 1 - Da / 0 - Nu ): ");
+                        
+                        int opt = 0;
+                        bool intrareValida = false;
+                        while (!intrareValida)
+                        {
+                            if (int.TryParse(Console.ReadLine(), out int value4))
+                            {
+                                intrareValida = true;
+                                opt = value4;
+                            }
+                            else
+                            {
+                                Console.Write(" | ERROR | Optiune invalida! Reintroduceti optiunea : ");
+                            }
+                        }
+                        
+                        if (opt == 0) {
+                            Console.WriteLine(" | INFO | Anulare rezervare! ");
+                            return;
+                        }
+                        
                         ok = true;
                         Calator.idTren = tren.GetTrenId();
                         tren.numarCalatori++;

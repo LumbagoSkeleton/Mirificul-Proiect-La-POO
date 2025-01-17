@@ -71,7 +71,7 @@ internal class RuteMari
             foreach (var rutaMica in rute.getRuteMici())
             {
                 rutaMica.StatiiIntermediare.AfisareStatii();
-                rutaMica.AfisareDetaliiRuta();
+                rutaMica.AfisareDetaliiRuta(tipMoneda);
             }
         }
         Console.WriteLine();
