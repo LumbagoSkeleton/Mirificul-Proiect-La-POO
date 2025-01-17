@@ -9,7 +9,7 @@ namespace Proiect_Poo
     internal class Loc
     {
         private int Id;
-        private int numarLoc;
+        internal int numarLoc;
         internal bool OcupareLoc { get; set; }
 
         public Loc(int numarLoc)
@@ -93,7 +93,7 @@ namespace Proiect_Poo
         }
         public void AfisareVagon()
         {
-            Console.WriteLine($"* Vagon cu capacitatea: {capacitateVagon}, numarulul vagonului: {numarVagon}, clasa: {clasa}, numarRanduri: {numarRanduri}, numarLocuriPeRand: {numarLocuriPeRand}");
+            Console.WriteLine($"* Vagon cu capacitatea: {capacitateVagon}, numarulul vagonului: {numarVagon}, clasa: {clasa}, numarRanduri: {numarRanduri}, numarLocuriPeRand: {numarLocuriPeRand}, , numarCalatori: {numarCalatori}");
         }
     }
 }

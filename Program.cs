@@ -4,6 +4,34 @@ namespace Proiect_Poo;
 
 class Program
 {
+    public class MonedaWrapper // wrapper = "inveleste" pentru a oferi functionalitati suplimentare, cum ar fi validare, abstractizare.
+    {
+        private int tipMoneda;
+
+        public int TipMoneda
+        {
+            get { return tipMoneda; }
+            set
+            {
+                if (value >= 0 && value <= 2) // validare moneda
+                    tipMoneda = value;
+                else
+                {
+                    throw new ArgumentException(" | ERROR | Moneda invalida! ");
+                }
+            }
+        }
+
+        public MonedaWrapper(int initialValue)
+        {
+            tipMoneda = initialValue;
+            if (tipMoneda < 0 || tipMoneda > 2)
+            {
+                throw new ArgumentException(" | ERROR | Moneda invalida! ");
+            }
+        }
+    }
+    
     static void Main(string[] args)
     {
         /*
@@ -49,7 +77,7 @@ class Program
         
         StatiiIntermediare statiiIntermediare_HD_Deva = new StatiiIntermediare(statie1, statie2);
         Orar orar_Ruta_HD_DV= new Orar(new DateTime(2025, 01, 20), new DateTime(2025, 01, 24));
-        RutaIntreDouaStatii rutaIntreDouaStatiiHdDv = new RutaIntreDouaStatii("R001", statiiIntermediare_HD_Deva, orar_Ruta_HD_DV, 2, 18);
+        RutaIntreDouaStatii rutaIntreDouaStatiiHdDv = new RutaIntreDouaStatii("R001", statiiIntermediare_HD_Deva, orar_Ruta_HD_DV, 18, 10);
         
         var tren1 = new Tren("HD2342", 1);
         tren1.addVagons(new List<int>() {35, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2}, new List<int>(){5, 5, 5}, new List<int>(){7, 8, 6});
@@ -58,10 +86,10 @@ class Program
         rutaIntreDouaStatiiHdDv.AdaugareTrenuriDisponibile(new List<Tren> { tren1, tren2 });
         
         StatiiIntermediare statiiIntermediare_Dv_Craiova = new StatiiIntermediare(statie2, statie3);
-        Orar orar_Ruta_Dv_Craiova= new Orar(new DateTime(2024, 10, 12), new DateTime(2024, 10, 13));
-        RutaIntreDouaStatii rutaIntreDouaStatiiDvCraiova = new RutaIntreDouaStatii("R023", statiiIntermediare_Dv_Craiova, orar_Ruta_Dv_Craiova, 5, 43);
+        Orar orar_Ruta_Dv_Craiova= new Orar(new DateTime(2025, 10, 12), new DateTime(2025, 10, 13));
+        RutaIntreDouaStatii rutaIntreDouaStatiiDvCraiova = new RutaIntreDouaStatii("R023", statiiIntermediare_Dv_Craiova, orar_Ruta_Dv_Craiova, 43, 240);
         
-        tren1 = new Tren("DV1342", 1);
+        tren1 = new Tren("HDDV1342", 1);
         tren1.addVagons(new List<int>() {50, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2}, new List<int>(){5, 5, 5}, new List<int>(){10, 8, 6});
         tren2 = new Tren("DV1345", 2);
         tren2.addVagons(new List<int>() {35, 40, 50, 30}, new List<int>() {1, 2, 3, 4}, new List<int>(){0, 1, 2, 3}, new List<int>(){5, 5, 5, 3 }, new List<int>(){7, 8, 10, 10 });
@@ -70,27 +98,27 @@ class Program
         
         
         StatiiIntermediare statiiIntermediare_Craiova_Bucuresti = new StatiiIntermediare(statie3, statie4);
-        Orar orar_Ruta_Craiova_Bucuresti= new Orar(new DateTime(2024, 8, 27), new DateTime(2024, 10, 28));
-        RutaIntreDouaStatii rutaIntreDouaStatiiCraiovaBucuresti = new RutaIntreDouaStatii("R024", statiiIntermediare_Craiova_Bucuresti, orar_Ruta_Craiova_Bucuresti, 7, 60);
+        Orar orar_Ruta_Craiova_Bucuresti= new Orar(new DateTime(2025, 10, 27), new DateTime(2025, 10, 29));
+        RutaIntreDouaStatii rutaIntreDouaStatiiCraiovaBucuresti = new RutaIntreDouaStatii("R024", statiiIntermediare_Craiova_Bucuresti, orar_Ruta_Craiova_Bucuresti, 60, 200);
         
         tren1 = new Tren("CR3342", 1);
-        tren1.addVagons(new List<int>() {60, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2, 3}, new List<int>(){6, 4, 3} , new List<int>(){10, 10, 10});
+        tren1.addVagons(new List<int>() {60, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2}, new List<int>(){6, 4, 3} , new List<int>(){10, 10, 10});
 
         tren2 = new Tren("CR3345", 2);
-        tren2.addVagons(new List<int>() {60, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2, 3}, new List<int>(){6, 4, 3} , new List<int>(){10, 10, 10});
+        tren2.addVagons(new List<int>() {60, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2}, new List<int>(){6, 4, 3} , new List<int>(){10, 10, 10});
 
         tren3 = new Tren("CR3321", 2);
-        tren3.addVagons(new List<int>() {60, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2, 3}, new List<int>(){6, 4, 3} , new List<int>(){10, 10, 10});
+        tren3.addVagons(new List<int>() {60, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2}, new List<int>(){6, 4, 3} , new List<int>(){10, 10, 10});
 
         var tren4 = new Tren("CR4123", 2);
-        tren1.addVagons(new List<int>() {60, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2, 3}, new List<int>(){6, 4, 3} , new List<int>(){10, 10, 10});
+        tren1.addVagons(new List<int>() {60, 40, 30}, new List<int>() {1, 2, 3}, new List<int>(){0, 1, 2}, new List<int>(){6, 4, 3} , new List<int>(){10, 10, 10});
 
         rutaIntreDouaStatiiCraiovaBucuresti.AdaugareTrenuriDisponibile(new List<Tren> { tren1, tren2, tren3, tren4 });
-        
-        ListaDeRute ListaRute = new ListaDeRute();
 
-        ListaRute.AdaugareRuta(rutaIntreDouaStatiiDvCraiova);
-        ListaRute.AdaugareRute(new List<RutaIntreDouaStatii> { rutaIntreDouaStatiiHdDv,rutaIntreDouaStatiiCraiovaBucuresti });
+        ListaDeRuteMici listaRuteMici = new ListaDeRuteMici();
+
+        listaRuteMici.AdaugareRutaMica(rutaIntreDouaStatiiDvCraiova);
+        listaRuteMici.AdaugareRuteMici(new List<RutaIntreDouaStatii> { rutaIntreDouaStatiiHdDv,rutaIntreDouaStatiiCraiovaBucuresti });
 
         // Declarare variabile pentru citire date personale si variablie pentru statii
         
@@ -118,13 +146,27 @@ class Program
         
         // Rezervare calatorilor pe rute
         
-        ListaRute.RezervareRutaCalator(statie1, statie2, Calator_nou1);
-        ListaRute.RezervareRutaCalator(statie1, statie2, Calator_nou2);
-        ListaRute.RezervareRutaCalator(statie1, statie2, Calator_nou3);
-        ListaRute.RezervareRutaCalator(statie3, statie4, Calator_nou4);
-        ListaRute.RezervareRutaCalator(statie3, statie4, Calator_nou5);
-        ListaRute.RezervareRutaCalator(statie2, statie3, Calator_nou6);
-        ListaRute.RezervareRutaCalator(statie2, statie3, Calator_nou7);
+        listaRuteMici.RezervareRutaCalator(statie1, statie2, Calator_nou1);
+        listaRuteMici.RezervareRutaCalator(statie1, statie2, Calator_nou2);
+        listaRuteMici.RezervareRutaCalator(statie1, statie2, Calator_nou3);
+        listaRuteMici.RezervareRutaCalator(statie3, statie4, Calator_nou4);
+        listaRuteMici.RezervareRutaCalator(statie3, statie4, Calator_nou5);
+        listaRuteMici.RezervareRutaCalator(statie2, statie3, Calator_nou6);
+        listaRuteMici.RezervareRutaCalator(statie2, statie3, Calator_nou7);
+
+        RuteMari ruteMari = new RuteMari();
+        
+        Ruta ruta1= new Ruta(new List<RutaIntreDouaStatii>(){rutaIntreDouaStatiiHdDv, rutaIntreDouaStatiiDvCraiova}, tren1);
+        Ruta ruta2= new Ruta(new List<RutaIntreDouaStatii>(){rutaIntreDouaStatiiDvCraiova, rutaIntreDouaStatiiCraiovaBucuresti}, tren1);
+
+        //Orar Durata = new Orar(ruta1.getRuteMici()[0].Orar.DataPlecare, ruta1.getRuteMici()[ruta1.getRuteMici().Count - 1].Orar.DataSosire);
+        //ruta1.durata = Durata;
+        
+        
+        //ruta2.durata.DataPlecare = ruta2.getRuteMici()[0].Orar.DataPlecare;
+        //ruta2.durata.DataSosire = ruta2.getRuteMici()[ruta2.getRuteMici().Count - 1].Orar.DataSosire;
+        
+        ruteMari.AdaugaRuteMari(new List<Ruta>(){ruta1, ruta2});
         
         Console.WriteLine("");
         
@@ -135,9 +177,57 @@ class Program
                               "2) Renuntati la o rezervare!\n" +
                               "3) Cautare rute tren disponibile intre doua statii... \n" +
                               "4) Vizualizare istoric calatori\n" +
-                              "5) Rezervare pe un loc dorit ( o persoana sau mai multe ) ( neimplementat inca )");
+                              "5) Rezervare pe un loc dorit ( o persoana sau mai multe )");
             
 
+            // tipMoneda == 0 euro
+            // tipMoneda == 1 lei
+            // tipMoneda == 2 dolari
+
+            MonedaWrapper monedaWrapper = new MonedaWrapper(1);
+            
+            Console.WriteLine();
+            Console.Write(" | INPUT | Introduceti moneda (0 euro, 1 lei, 2 dolari): ");
+            
+            bool intrareValida = false;
+            int opt= 0;
+            while (!intrareValida)
+            {
+                if (int.TryParse(Console.ReadLine(), out int value5))
+                {
+                    intrareValida = true;
+                    opt = value5;
+                    if (value5 < 0 || value5 > 2)
+                    {
+                        intrareValida = false;
+                        Console.Write(" | ERROR | Optiune invalida! Reintroduceti moneda (0 euro, 1 lei, 2 dolari): ");
+                    }
+                }
+                else
+                {
+                    Console.Write(" | ERROR | Optiune invalida! Reintroduceti moneda (0 euro, 1 lei, 2 dolari): ");
+                }
+            }
+
+            if (opt == 0)
+            {
+                monedaWrapper.TipMoneda = 0;
+            }
+            else
+            {
+                if (opt == 1)
+                {
+                    monedaWrapper.TipMoneda = 1;
+                }
+                else
+                {
+                    if (opt == 2)
+                    {
+                        monedaWrapper.TipMoneda = 2;
+                    }
+                }
+            }
+            
             Console.WriteLine();
             Console.Write(" | INPUT | Introduceti optiunea dvs.: ");
             if(!int.TryParse(Console.ReadLine(), out int menuValue))
@@ -153,8 +243,8 @@ class Program
                     
                     Console.Write(" | INPUT | Doriti sa faceti rezervarea pentru un calator sau pentru mai multi? ( 0 - pentru unu / 1 - pentru mai multi): ");
                     
-                    bool intrareValida = false;
-                    int opt= 0;
+                    intrareValida = false;
+                    opt= 0;
                     while (!intrareValida)
                     {
                         if (int.TryParse(Console.ReadLine(), out int value5))
@@ -211,8 +301,13 @@ class Program
                         }
                         
                         Console.WriteLine("");
-                        ListaRute.AfisareListaStatiiIntermediare();
+                        listaRuteMici.AfisareListaStatiiIntermediare();
                         Console.WriteLine("");
+                        
+                        Console.WriteLine("");
+                        ruteMari.AfisareRuteMari(monedaWrapper.TipMoneda);
+                        Console.WriteLine("");
+                        
                         Console.WriteLine(" | INPUT | Alegeti ruta dorita pe care doriti sa faceti rezervarea prin introducerea statiilor: ");
 
                         Console.Write(" | INPUT | Statia 1: ");
@@ -227,7 +322,7 @@ class Program
                         if (st1 != null && st2 != null)
                         {
                             var Calator_nou= new Calator(nume, prenume, varsta, clasa , DateTime.Now);
-                            ListaRute.RezervareRutaCalator(st1, st2, Calator_nou);
+                            listaRuteMici.RezervareRutaCalator(st1, st2, Calator_nou);
                         }
                         else
                         {
@@ -319,7 +414,7 @@ class Program
                                 }
                                 
                                 Console.WriteLine("");
-                                ListaRute.AfisareListaStatiiIntermediare();
+                                listaRuteMici.AfisareListaStatiiIntermediare();
                                 Console.WriteLine("");
                                 Console.WriteLine(" | INPUT | Alegeti ruta dorita pe care doriti sa faceti rezervarea prin introducerea statiilor: ");
 
@@ -335,7 +430,7 @@ class Program
                                 if (st1 != null && st2 != null)
                                 {
                                     var Calator_nou= new Calator(nume, prenume, varsta, clasa , DateTime.Now);
-                                    ListaRute.RezervareRutaCalator(st1, st2, Calator_nou);
+                                    listaRuteMici.RezervareRutaCalator(st1, st2, Calator_nou);
                                 }
                                 else
                                 {
@@ -360,7 +455,7 @@ class Program
                     prenume = Console.ReadLine();
 
                     Calator? cal= null;
-                    foreach (var r in ListaRute.GetRute())
+                    foreach (var r in listaRuteMici.GetRuteMici())
                     { 
                         cal = r.ListaCalatori.Find(c => c.nume == nume && c.prenume == prenume);
                         if (cal != null) break;
@@ -388,7 +483,7 @@ class Program
                         }
                         
                         if (opt2 == 1)
-                            ListaRute.GasireSiAnulareRezervarePtCalator(cal);
+                            listaRuteMici.GasireSiAnulareRezervarePtCalator(cal);
                         else
                         {
                             Console.WriteLine(" | FAILED | S-a renuntat la actiunea de stergere rezervare! ");
@@ -403,9 +498,12 @@ class Program
                     break;
                 
                 case 3:
-                    ListaRute.AfisareListaStatiiIntermediare();
+                    listaRuteMici.AfisareListaStatiiIntermediare();
+                    Console.WriteLine(" | OUTPUT | Afisare rute mari: ");
+                        
+                    ruteMari.AfisareRuteMari(monedaWrapper.TipMoneda);
                     
-                    Console.WriteLine("\n| IN | Introduceti cele doua statii pentru gasirea rutei dorite: ");
+                    Console.WriteLine("\n | INPUT | Introduceti cele doua statii pentru gasirea rutei dorite: ");
 
                     Console.Write(" | INPUT | Statia 1: ");
                     sst1= Console.ReadLine();
@@ -418,12 +516,33 @@ class Program
                     if (st1 != null && st2 != null)
                     {
                         Console.WriteLine();
-                        ListaRute.CautareRuteDisponibile(st1, st2);
+                        var ListaGasitaRuteMici = listaRuteMici.CautareRuteMiciDisponibile(st1, st2, monedaWrapper.TipMoneda);
+
+                        if (ListaGasitaRuteMici.Count >= 1)
+                        {
+                            // daca a gasic conexiuni de rute mici
+
+                            //Console.WriteLine("Conexiune gasita! Afisare lista statii intermediare!");
+                            listaRuteMici.AfisareListaStatiiIntermediare(ListaGasitaRuteMici);
+                        }
+                        
+                        // Cautare ruta mare 
+
+                        var rez = ruteMari.CautareRutaMare(st1, st2);
+
+                        if (rez != null)
+                        {
+                            rez.AfisareRutaMare(monedaWrapper.TipMoneda);
+                        }
+                        else
+                        {
+                            Console.WriteLine(" | FAILED | Nu s-a gasit ruta mare respectiva! Cel mai prob. exista conexiuni");
+                        }
                         Console.WriteLine();
                     }
                     else
                     {
-                        Console.WriteLine("Reintroduceti optiunea 1 pt. a reintroduce statiile corect. O statie invalida sau amandoua!\n");
+                        Console.WriteLine(" | INFO | Reintroduceti optiunea 1 pt. a reintroduce statiile corect. O statie invalida sau amandoua!\n");
                     }
                     break;
                 
@@ -447,7 +566,7 @@ class Program
                     }
                     if (opt == 0)
                     {
-                        foreach (var ruta in ListaRute.GetRute())
+                        foreach (var ruta in listaRuteMici.GetRuteMici())
                         {
                             ruta.StatiiIntermediare.AfisareStatii();
                         }
@@ -463,7 +582,7 @@ class Program
 
                         if (st1 != null || st2 != null)
                         {
-                            var ruta= ListaRute.DisponibilitateRutaFiz(st1, st2);
+                            var ruta= listaRuteMici.DisponibilitateRutaFiz(st1, st2);
                             if (ruta != null)
                             {
                                 Console.WriteLine(" | OUTPUT | Ruta gasita! Afisare Istoric Calatori pentru ruta aleasa:");
@@ -480,17 +599,280 @@ class Program
                     {
                         if (opt == 1)
                         {
-                            foreach (var ruta in ListaRute.GetRute())
+                            foreach (var ruta in listaRuteMici.GetRuteMici())
                             {
                                 ruta.AfisareIstoricCalatori();
                             }
                         }
                         Console.WriteLine();
                     }
+
                     break;
+                
+                 case 5:
+
+                        Console.Write(" | INPUT | Doriti sa faceti rezervarea pentru un calator sau pentru mai multi? ( 0 - pentru unu / 1 - pentru mai multi): ");
+
+                        bool intrareValida1 = false;
+                        int opt1 = 0;
+                        while (!intrareValida1)
+                        {
+                            if (int.TryParse(Console.ReadLine(), out int value5))
+                            {
+                                intrareValida1 = true;
+                                opt1 = value5;
+                            }
+                            else
+                            {
+                                Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti optiunea dvs ( 0 - pentru unu / 1 - pentru mai multi): ");
+                            }
+                        }
+
+                        if (opt1 == 0)
+                        {
+
+                            Console.WriteLine(" | INPUT | Va rugam frumos sa va introduceti datele dvs.:");
+                            Console.WriteLine("");
+                            Console.Write(" | INPUT | Nume: ");
+                            nume = Console.ReadLine();
+                            Console.Write(" | INPUT | Prenume: ");
+                            prenume = Console.ReadLine();
+                            Console.Write(" | INPUT | Varsta: ");
+                            varsta = 18;
+
+                            intrareValida = false;
+                            while (!intrareValida)
+                            {
+                                if (int.TryParse(Console.ReadLine(), out int value4))
+                                {
+                                    intrareValida = true;
+                                    varsta = value4;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti varsta dvs: ");
+                                }
+                            }
+                            Console.Write(" | INPUT | Clasa vagonului: ");
+                            clasa = 0;
+                            intrareValida = false;
+                            while (!intrareValida)
+                            {
+                                if (int.TryParse(Console.ReadLine(), out int value2))
+                                {
+                                    intrareValida = true;
+                                    clasa = value2;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti clasa vagonului dvs.");
+                                }
+                            }
+
+                            Console.Write(" | INPUT | Vagonul Dorit ");
+                            int numarVagon = 0;
+                            intrareValida = false;
+                            while (!intrareValida)
+                            {
+                                if (int.TryParse(Console.ReadLine(), out int value4))
+                                {
+                                    intrareValida = true;
+                                    numarVagon = value4;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti Vagonul : ");
+                                }
+                            }
+
+                            Console.Write(" | INPUT | Locul Dorit ");
+                            int numarLoc = 0;
+                            intrareValida = false;
+                            while (!intrareValida)
+                            {
+                                if (int.TryParse(Console.ReadLine(), out int value4))
+                                {
+                                    intrareValida = true;
+                                    numarLoc = value4;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti Locul : ");
+                                }
+                            }
+
+
+
+                            Console.WriteLine("");
+                            listaRuteMici.AfisareListaStatiiIntermediare();
+                            Console.WriteLine("");
+                            Console.WriteLine(" | INPUT | Alegeti ruta dorita pe care doriti sa faceti rezervarea prin introducerea statiilor: ");
+
+                            Console.Write(" | INPUT | Statia 1: ");
+                            sst1 = Console.ReadLine();
+                            Console.Write(" | INPUT | Statia 2: ");
+                            sst2 = Console.ReadLine();
+
+
+                         
+
+                            st1 = statii.Find(s => s.NumeStatie == sst1);
+                            st2 = statii.Find(s => s.NumeStatie == sst2);
+                            Console.WriteLine("");
+
+                            if (st1 != null && st2 != null)
+                            {
+                                var Calator_nou = new Calator(nume, prenume, varsta, clasa, DateTime.Now);
+                                listaRuteMici.RezervareRutaCalator(st1, st2, Calator_nou,numarVagon,numarLoc);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Reintroduceti optiunea 1 pt. a reintroduce statiile corect. O statie invalida sau amandoua!");
+                            }
+                            
+                        }
+                        else
+                        {
+                            if (opt1 == 1)
+                            {
+                                Console.Write(" | INPUT | Va rugam frumos sa spuneti cati calatori pe langa dvs. sunt: ");
+
+                                int nrCalarori = 0;
+
+                                intrareValida = false;
+                                while (!intrareValida)
+                                {
+                                    if (int.TryParse(Console.ReadLine(), out int value6))
+                                    {
+                                        if (value6 <= 0)
+                                        {
+                                            Console.WriteLine(" | ERROR |  Reintroduceti nr de calatori ( nrCalarori > 0 ! ): ");
+                                            intrareValida = false;
+                                            while (!intrareValida)
+                                            {
+                                                if (int.TryParse(Console.ReadLine(), out int value7))
+                                                {
+                                                    intrareValida = true;
+                                                    nrCalarori = value7;
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti varsta dvs: ");
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            intrareValida = true;
+                                            nrCalarori = value6;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti nr de calatori ( nrCalarori > 0 ! ): ");
+                                    }
+                                    Console.WriteLine("");
+                                }
+
+                                for (int i = 0; i < nrCalarori; i++)
+                                {
+                                    Console.WriteLine($" | CALATOR {i + 1} | ");
+                                    Console.WriteLine("");
+                                    Console.Write(" | INPUT | Nume: ");
+                                    nume = Console.ReadLine();
+                                    Console.Write(" | INPUT | Prenume: ");
+                                    prenume = Console.ReadLine();
+                                    Console.Write(" | INPUT | Varsta: ");
+                                    varsta = 18;
+
+                                    intrareValida = false;
+                                    while (!intrareValida)
+                                    {
+                                        if (int.TryParse(Console.ReadLine(), out int value4))
+                                        {
+                                            intrareValida = true;
+                                            varsta = value4;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti varsta dvs: ");
+                                        }
+                                    }
+                                    Console.Write(" | INPUT | Clasa vagonului: ");
+                                    clasa = 0;
+                                    intrareValida = false;
+                                    while (!intrareValida)
+                                    {
+                                        if (int.TryParse(Console.ReadLine(), out int value2))
+                                        {
+                                            intrareValida = true;
+                                            clasa = value2;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti clasa vagonului dvs.");
+                                        }
+                                    }
+                                    Console.Write(" | INPUT | Vagonul Dorit ");
+                                    int numarVagon = 0;
+                                    intrareValida = false;
+                                    while (!intrareValida)
+                                    {
+                                        if (int.TryParse(Console.ReadLine(), out int value4))
+                                        {
+                                            intrareValida = true;
+                                            numarVagon = value4;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti Vagonul : ");
+                                        }
+                                    }
+                                    Console.Write(" | INPUT | Locul Dorit ");
+                                    int numarLoc = 0;
+                                    intrareValida = false;
+                                    while (!intrareValida)
+                                    {
+                                        if (int.TryParse(Console.ReadLine(), out int value4))
+                                        {
+                                            intrareValida = true;
+                                            numarLoc = value4;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(" | ERROR | Optiune invalida! Reintroduceti Locul : ");
+                                        }
+                                    }
+                                    Console.WriteLine("");
+                                    listaRuteMici.AfisareListaStatiiIntermediare();
+                                    Console.WriteLine("");
+                                    Console.WriteLine(" | INPUT | Alegeti ruta dorita pe care doriti sa faceti rezervarea prin introducerea statiilor: ");
+
+                                    Console.Write(" | INPUT | Statia 1: ");
+                                    sst1 = Console.ReadLine();
+                                    Console.Write(" | INPUT | Statia 2: ");
+                                    sst2 = Console.ReadLine();
+
+                                    st1 = statii.Find(s => s.NumeStatie == sst1);
+                                    st2 = statii.Find(s => s.NumeStatie == sst2);
+                                    Console.WriteLine("");
+
+                                    if (st1 != null && st2 != null)
+                                    {
+                                        var Calator_nou = new Calator(nume, prenume, varsta, clasa, DateTime.Now);
+                                        listaRuteMici.RezervareRutaCalator(st1, st2, Calator_nou,numarVagon,numarLoc);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Reintroduceti optiunea 1 pt. a reintroduce statiile corect. O statie invalida sau amandoua!");
+                                    }
+                                }
+                            }
+                        }
+                        break;
                 default:
-                    Console.WriteLine("Optiune invalida!");
-                    break;
+                        Console.WriteLine("Optiune invalida!");
+                        break;
             }
         }
     }

@@ -4,6 +4,6 @@ internal class MonedaLei : InterfataCost
 {
     public string MonedaStr(float valueInEuro)
     {
-        return $"{valueInEuro*4,97} Lei";
+        return $"{valueInEuro*4.97} Lei";
     }
 }

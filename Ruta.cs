@@ -1,190 +1,204 @@
-using Proiect_Poo;
-using ProjPooPartea1;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Proiect_Poo;
-
-public abstract class Orar
+namespace Proiect_Poo
 {
-    public DateTime DataPlecare { get; set; }
-    public DateTime DataSosire { get; set; }
+    internal class Ruta
+    {
+        internal List<RutaIntreDouaStatii> ruta;
 
-    public Orar(DateTime dataPlecare, DateTime dataSosire)
-    {
-        DataPlecare = dataPlecare;
-        DataSosire = dataSosire;
-    }
+        //internal List<Statie> StatiiIntermediare = new List<Statie>();
+        internal int nrStatii { get; }
 
-    internal void AfisareOrar()
-    {
-        Console.WriteLine($" DataPlecare: {DataPlecare.ToString("dd/MM/yyyy HH:mm:ss")} + DataSosire: {DataSosire.ToString("dd/MM/yyyy HH:mm:ss")}" );
-    }
-}
-
-public abstract class StatiiIntermediare
-{
-    public Statie Statie1 {get; set;}
-    public Statie Statie2 {get; set;}
-
-    public StatiiIntermediare(Statie statie1, Statie statie2)
-    {
-        Statie1 = statie1;
-        Statie2 = statie2;
-    }
-
-    internal void AfisareStatii()
-    {
-        Console.WriteLine($"Statii intermediare: {Statie1.NumeStatie} - {Statie2.NumeStatie}");
-    }
-}
-
-internal class Ruta
-{
-    // statii intermediare, orar, durata, cost
-
-    public StatiiIntermediare StatiiIntermediare { get; set; }
-    private string Id;
-    public Orar Orar;
-    public float Durata;
-    public float Cost;
-    public bool RutaActiva { get; set; }
-    private List<Tren> TrenuriDisponibile;
-    private List<Calator> ListaCalatori;
-
-    public List<Tren> GetTrenuriDisponibile()
-    {
-        return TrenuriDisponibile;
-    }
-
-    internal string GetRutaId() => Id;
-    
-    public Ruta(string id, StatiiIntermediare statiiIntermediare, Orar orar, float durata, float cost )
-    {
-        TrenuriDisponibile = new List<Tren>();
-        StatiiIntermediare = statiiIntermediare;
-        Orar = orar;
-        Durata = durata;
-        Cost = cost;
-        Id = id;
-        RutaActiva = true;
-    }
-    
-    internal void AnulareRezervare(Calator? calator)
-    {
-        var diff = DateTime.Now - calator.Datarezervare;
-        if(calator!=null){
-            if (diff.Hours > 24) 
-            {
-            ListaCalatori.Remove(calator);
-            }
-            else
-            {
-                Console.WriteLine("Nu se mai poate anula rezervarea!");
-            }
-        }
-    }
-    
-    internal void AdaugareCalatori(List<Calator> calatori)
-    {
-        ListaCalatori.AddRange(calatori);
-    }
-    
-    internal void AdaugareCalator(Calator calator)
-    {
-        ListaCalatori.Add(calator);
-    }
-    public void AfisareTrenuriDisponibile()
-    {
-        Console.WriteLine(" * Trenuri disponibile: ");
-        foreach (Tren tr in TrenuriDisponibile)
+        internal Statie statieStart { get; }
+        internal Statie statieStop { get; }
+        internal Orar Durata { get; set; }
+        
+        internal Tren TrenRuta { get; set; }
+        
+        private float distantaTotala;
+        
+        public Ruta()
         {
-            tr.AfisareTren();
+            ruta = new List<RutaIntreDouaStatii>();
+        }
+
+        internal List<RutaIntreDouaStatii> getRuteMici()
+        {
+            return ruta;
+        }
+
+        public void AdaugareRutaMica(RutaIntreDouaStatii rutaIntreDouaStatii)
+        {
+            // adaugare ruta mica
+            ruta.Add(rutaIntreDouaStatii);
+        }
+    
+        public void StergereRutaMica(RutaIntreDouaStatii rutaIntreDouaStatii)
+        {
+            // sterge ruta mica
+            ruta.Remove(rutaIntreDouaStatii);
+        }
+
+        public void AdaugareRuteMici(List<RutaIntreDouaStatii> rute)
+        {
+            // adaugare rute mici
+            ruta.AddRange(rute);
+        }
+
+        public void StergeRuteMici(List<RutaIntreDouaStatii> rute)
+        {
+            // sterge rute mici
+            ruta.Clear(); 
+        }
+    
+        public int NumarDeRuteMici()
+        {
+            return ruta.Count();
+        }
+
+        internal List<RutaIntreDouaStatii> GetRuteMici()
+        {
+            return ruta;
+        }
+
+        internal List<Statie> ListaDeStatiiIntermediare(string statieDeStart, string statieDeSosire)
+        {
+            var listaDeStatiiInterm = new List<Statie>();
             
-        }
-        Console.WriteLine("");
-    }
-    
-    public void AfisareDetaliiRuta()
-    {
-        Console.WriteLine($" * Detalii ruta: Orar: {Orar} - Durata: {Durata} - Cost: {Cost}");
-    }
-    
-    public Tren? GasesteTrenDupaId(string id)
-    {
-        foreach (Tren tr in TrenuriDisponibile)
-        {
-            if (tr.GetTrenId() == id)
+            for (int i=0;i<ruta.Count;i++)
             {
-                return tr;
-            }
-        }
-        return null;
-    }
-    
-    public List<Tren> GasesteTrenuriDupaListaId(string[] listaId)
-    {
-        var ListaTrenuri = new List<Tren>();
-        foreach (string id in listaId)
-        {
-            var ok = false;
-            for(int i = 0; i < TrenuriDisponibile.Count && ok==false; i++)
-            {
-                if (TrenuriDisponibile[i].GetTrenId() == id)
+                
+                if (ruta[i].StatiiIntermediare.Statie1.NumeStatie == statieDeStart &&
+                    ruta[i].StatiiIntermediare.Statie2.NumeStatie != statieDeSosire)
                 {
-                    ok = true;
-                    ListaTrenuri.Add(TrenuriDisponibile[i]);
+                    var ok = false;
+                    foreach (var st in listaDeStatiiInterm)
+                    {
+                        if (ruta[i].StatiiIntermediare.Statie2 == st)
+                        {
+                            ok = true;
+                        }
+                    }
+                    if(ok == false)
+                        listaDeStatiiInterm.Add(ruta[i].StatiiIntermediare.Statie2);
+                }
+                else
+                {
+                    if (ruta[i].StatiiIntermediare.Statie1.NumeStatie != statieDeStart &&
+                        ruta[i].StatiiIntermediare.Statie2.NumeStatie == statieDeSosire)
+                    {
+                        var ok = false;
+                        foreach (var st in listaDeStatiiInterm)
+                        {
+                            if (ruta[i].StatiiIntermediare.Statie1 == st)
+                            {
+                                ok = true;
+                            }
+                        }
+                        if(ok == false)
+                            listaDeStatiiInterm.Add(ruta[i].StatiiIntermediare.Statie1);
+                    }
+                    else
+                    {
+                        if (ruta[i].StatiiIntermediare.Statie1.NumeStatie != statieDeStart &&
+                            ruta[i].StatiiIntermediare.Statie2.NumeStatie != statieDeSosire)
+                        {
+                            var ok = false;
+                            foreach (var st in listaDeStatiiInterm)
+                            {
+                                if (ruta[i].StatiiIntermediare.Statie2 == st)
+                                {
+                                    ok = true;
+                                }
+                            }
+                            if(ok == false)
+                                listaDeStatiiInterm.Add(ruta[i].StatiiIntermediare.Statie2);
+                        }
+                    }
                 }
             }
+
+            foreach (var st in listaDeStatiiInterm)
+            {
+                Console.WriteLine($"                   NumeStatie: {st.NumeStatie} Locatie: {st.Locatie}");
+            }
+
+            return listaDeStatiiInterm;
         }
-
-        return ListaTrenuri;
-    }
-
-    internal void AfisareIstoricCalatori()
-    {
-        foreach (var c in ListaCalatori)
+        public Ruta(List<RutaIntreDouaStatii> rut, Tren trenRuta)
         {
-            c.IstoricOrarCalator.AfisareOrar();
+            this.ruta = rut;
+            nrStatii = getNrStatii();
+            
+            TrenRuta = trenRuta;
+            
+            var statieDeStart = getRuteMici()[0].StatiiIntermediare.Statie1;
+            var statieDeSosire = getRuteMici()[getRuteMici().Count - 1].StatiiIntermediare.Statie2;
+
+            statieStart = statieDeStart;
+            statieStop = statieDeSosire;
+            
+            Orar durata = new Orar(ruta[0].Orar.DataPlecare, ruta[ruta.Count - 1].Orar.DataSosire);
+            Durata = durata;
+
+            if (ruta[0].Orar.DataPlecare > ruta[ruta.Count - 1].Orar.DataSosire)
+            {
+                throw new ArgumentException($" | ERROR | Data plecare de la ruta mare {statieStart.NumeStatie} -> {statieStop.NumeStatie} > Data sosire, ceea ce nu se poate!");
+            }
+            
+            distantaTotala = getDistantaTotala();
         }
-    }
-    
-    public void AdaugareTrenuriDisponibile(string[] id)
-    {
-        var listaTrenuri = GasesteTrenuriDupaListaId(id);
-        if(listaTrenuri.Count > 0)
-            TrenuriDisponibile.AddRange(listaTrenuri);
-    }
-    
-    public void AdaugareTrenDisponibil(string id)
-    {
-        var tren = GasesteTrenDupaId(id);
-        if(tren!=null)
-            TrenuriDisponibile.Add(tren);
-    }
-    
-    public void StergereTrenDisponibil(string id)
-    {
-        var tren = GasesteTrenDupaId(id);
-        if(tren!=null)
-            TrenuriDisponibile.Remove(tren);
-    }
-    
-    public void AdaugareTrenuriDisponibile(List<Tren> trenuri)
-    {
-        TrenuriDisponibile.AddRange(trenuri);
-    }
-    
-    public void AdaugareTrenDisponibil(Tren tren)
-    {
-        TrenuriDisponibile.Add(tren);
-    }
-    
-    public void StergereTrenDisponibil(Tren tren)
-    {
-        TrenuriDisponibile.Remove(tren);
-    }
-    
-    public void StergereToateTrenuriDisponibile()
-    {
-        TrenuriDisponibile.Clear();
+
+        public int getNrStatii()
+        {
+            int statii = 0;
+            foreach (RutaIntreDouaStatii aux in ruta)
+                if (ruta.Count == 1)
+                    break;
+                else
+                    statii++;
+
+            return statii;
+        }
+        public float getDistantaTotala()
+        {
+            float distantaAux=0;
+            foreach (RutaIntreDouaStatii aux in ruta)
+            {
+                distantaAux += aux.distanta;
+            }
+            return distantaAux;
+        }
+
+        internal void AfisareRutaMare(int tipMoneda)
+        {
+            Console.WriteLine(" | OUTPUT | Afisare Ruta Mare: ");
+
+            var statieDeStart = statieStart;
+            var statieDeSosire = statieStop;
+            var NumeRuta = statieDeStart.NumeStatie + " -> " + statieDeSosire.NumeStatie;
+            Console.WriteLine($" | OUTPUT | * Ruta cu numele {NumeRuta}:");
+            Console.WriteLine(
+                $"                * Ruta are statia de start: {statieDeStart.NumeStatie} si statia de sosire: {statieDeSosire.NumeStatie}");
+            Console.WriteLine($"                * Ruta are {getDistantaTotala()} kilometri");
+            var Diff = Durata.DataSosire - Durata.DataPlecare;
+            Console.WriteLine(
+                $"                * Data Plecare: {Durata.DataPlecare} - Data Sosire: {Durata.DataSosire} si dureaza {Diff.Days} zile, {Diff.Hours} ore si {Diff.Minutes} minute");
+            Console.WriteLine("     Afisare tren: ");
+            TrenRuta.AfisareTren(tipMoneda);
+
+            Console.Write($"                  * Ruta are urmatoarele statii intermediare: \n");
+            var listaDeStatiiInterm = ListaDeStatiiIntermediare(statieDeStart.NumeStatie, statieDeSosire.NumeStatie);
+
+            foreach (var rutaMica in getRuteMici())
+            {
+                rutaMica.StatiiIntermediare.AfisareStatii();
+                rutaMica.AfisareDetaliiRuta();
+            }
+        }
     }
 }

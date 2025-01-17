@@ -4,6 +4,6 @@ internal class MonedaEuro : InterfataCost
 {
     public string MonedaStr(float valueInEuro)
     {
-        return $"{valueInEuro} \u20ac";
+        return $"{valueInEuro} Euro";
     }
 }
