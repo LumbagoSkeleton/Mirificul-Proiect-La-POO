@@ -42,6 +42,7 @@
             this.profil.TabIndex = 0;
             this.profil.Text = "Profil";
             this.profil.UseVisualStyleBackColor = true;
+            this.profil.Click += new System.EventHandler(this.profil_Click);
             // 
             // label1
             // 
@@ -59,8 +60,9 @@
             this.rezervareRuta.Name = "rezervareRuta";
             this.rezervareRuta.Size = new System.Drawing.Size(96, 55);
             this.rezervareRuta.TabIndex = 2;
-            this.rezervareRuta.Text = "Rezerva ruta";
+            this.rezervareRuta.Text = "Rute";
             this.rezervareRuta.UseVisualStyleBackColor = true;
+            this.rezervareRuta.Click += new System.EventHandler(this.rezervareRuta_Click);
             // 
             // gestionare
             // 

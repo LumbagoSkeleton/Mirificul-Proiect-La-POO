@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace WindowsFormsApp1.Forms
 {
     public partial class Login : Form
     {
+        SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename=C:\Users\total\source\repos\WindowsFormsApp1\WindowsFormsApp1\Database1.mdf;Integrated Security = True");
+        Scripts.Bogus.LoginManager loginManager = new Scripts.Bogus.LoginManager();
         public Login()
         {
             InitializeComponent();
@@ -28,15 +31,27 @@ namespace WindowsFormsApp1.Forms
             SignUp signUp = new SignUp(); signUp.Show(); this.Hide();
         }
 
-        // validare date
+        private bool CautareUtilizator()
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select * from [Utilizatori] where Email = '" + textBox1.Text + "' and Parola = '" + textBox2.Text + "'";
+            int check = cmd.ExecuteNonQuery();
+            if (check == 0) { con.Close(); return false; }
+            else { con.Close(); return true; }
+        }
+
+        // validare date - returneaza mesajul de eroare daca se aplica, null in caz contrar
         private string ValidareDate()
         {
-
             if (textBox1.Text == "" || textBox2.Text == "") // campuri libere
             {
                 return "Trebuie completate toate campurile!";
             }
+
             // verificare date din baza de date
+            if(!CautareUtilizator()) { return "Datele introduse sunt incorecte!"; }
             return null;
         }
 
@@ -50,10 +65,9 @@ namespace WindowsFormsApp1.Forms
             }
             else
             {
-                Acasa acasa = new Acasa(false); acasa.Show(); Hide();
+                loginManager.Logare(textBox1, textBox2, checkBox1.Checked);
+                Hide();
             }
         }
-
-        
     }
 }

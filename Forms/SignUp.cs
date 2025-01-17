@@ -7,11 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace WindowsFormsApp1
 {
     public partial class SignUp : Form
     {
+        Scripts.Bogus.LoginManager loginManager = new Scripts.Bogus.LoginManager();
+        SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename=C:\Users\total\source\repos\WindowsFormsApp1\WindowsFormsApp1\Database1.mdf;Integrated Security = True");
+        int id = 15;
+
         public SignUp()
         {
             InitializeComponent();
@@ -38,9 +43,9 @@ namespace WindowsFormsApp1
             }
             else
             {
-                bool admin = false;
-                if (ListaRoluri.SelectedItem.ToString() == "Administrator") { admin = true; }
-                Forms.Acasa acasa = new Forms.Acasa(admin); acasa.Show(); Hide();
+                loginManager.AdaugareUser(id, numeTextBox, prenumeTextBox, varstaTextBox, emailTextBox, parolaTextBox, ListaRoluri.SelectedItem.ToString());
+                id++;
+                Hide();
             }
         }
 
