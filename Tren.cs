@@ -11,7 +11,7 @@ namespace Proiect_Poo
     {
         internal string id;
         private int numarTren;
-        internal int capacitateTren = 0;
+        internal int capacitateTren = -1;
         internal int numarCalatori = 0;
         internal List<Statie> listaOpriri = new List<Statie>();
         internal float pret { get; set; }
@@ -20,6 +20,13 @@ namespace Proiect_Poo
         internal int GetNumar_tren() => numarTren;
         internal List<Vagon> GetlistaVagoane() => listaVagoane;
         internal Ruta rutaTren;
+        public Tren(string id, int numarTren)
+        {
+            this.id = id;
+            this.numarTren = numarTren;
+            listaVagoane = new List<Vagon>();
+            this.rutaTren = rutaTren;
+        }
         public Tren (string id, int numarTren, Ruta rutaTren)
         {
             this.id = id;
@@ -85,6 +92,32 @@ namespace Proiect_Poo
         public virtual List<Statie> SetListaOpriri(List<Statie>opriri)
         {
             return new List<Statie>();
+        }
+        public void rezervareLoc(int numarVagon,int numarLoc)
+        {
+            Vagon vagon = null;
+            bool ok = false ;
+            foreach (Vagon index_vagon in listaVagoane)
+                if (numarVagon == index_vagon.getnumarVagon())
+                {
+                    ok = true;
+                    vagon = index_vagon;
+                    break;
+
+                }
+                if(ok == false)
+                    throw new Exception($"vagonul {numarVagon} din trenul cu id ul {id} nu exista in trenul ales");
+
+            ok = false;
+            foreach (Loc index_loc in vagon.locuri)
+                if (numarLoc == index_loc.numarLoc)
+                {
+                    index_loc.OcupareLoc = true;
+                    ok= true;
+                    break;
+                }
+                if(ok==false)
+                    throw new Exception($"locul {numarLoc} din vagonul {numarVagon} si trenul cu id ul {id} nu exista");
         }
     }
 }

@@ -111,6 +111,12 @@ internal class RutaIntreDouaStatii
         ListaCalatori.AddRange(calatori);
     }
     
+    internal void AdaugareCalator(Calator calator, Tren tren, int numarVagon,int numarLoc)
+    {
+        // Adauga un calator si ii atribuie un loc
+        ListaCalatori.Add(calator);
+        tren.rezervareLoc(numarVagon, numarLoc);
+    }
     internal void AdaugareCalator(Calator calator)
     {
         ListaCalatori.Add(calator);
