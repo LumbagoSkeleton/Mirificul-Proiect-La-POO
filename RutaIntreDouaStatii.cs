@@ -42,8 +42,9 @@ internal class RutaIntreDouaStatii
 
     public StatiiIntermediare StatiiIntermediare { get; set; }
     private string Id;
+    internal float Cost { get; set; }
     public Orar Orar;
-    public float Durata;
+    public TimeSpan Durata;
     internal string NumeRuta { get; set; }
     internal bool RutaActiva { get; set; }
     private List<Tren> TrenuriDisponibile;
@@ -60,28 +61,46 @@ internal class RutaIntreDouaStatii
     {
 
     }
-    public RutaIntreDouaStatii(string id, StatiiIntermediare statiiIntermediare, Orar orar, float durata, float distanta, bool rutaActiva, List<Tren> trenuriDisponibile, List<Calator> listaCalatori  )
+    public RutaIntreDouaStatii(string id, StatiiIntermediare statiiIntermediare, Orar orar, float distanta, bool rutaActiva, List<Tren> trenuriDisponibile, List<Calator> listaCalatori)
     {
         TrenuriDisponibile = trenuriDisponibile;
         StatiiIntermediare = statiiIntermediare;
         Orar = orar;
-        Durata = durata;
+        
+        TimeSpan diff= Orar.DataSosire - Orar.DataPlecare;
+        Durata = diff;
+        
         Id = id;
         RutaActiva = true;
         ListaCalatori = listaCalatori;
-        distanta = this.distanta;
+        this.distanta = distanta;
     }
     
-    public RutaIntreDouaStatii(string id, StatiiIntermediare statiiIntermediare, Orar orar, float durata, float cost)
+    public RutaIntreDouaStatii(string id, StatiiIntermediare statiiIntermediare, Orar orar, float cost)
     {
         TrenuriDisponibile = new List<Tren>();
         StatiiIntermediare = statiiIntermediare;
         Orar = orar;
-        Durata = durata;
+        TimeSpan diff= Orar.DataSosire - Orar.DataPlecare;;
+        Durata = diff; 
         Id = id;
+        Cost = cost;
         RutaActiva = true;
         ListaCalatori = new List<Calator>();
-        distanta = 0;
+        this.distanta= 0;
+    }
+    public RutaIntreDouaStatii(string id, StatiiIntermediare statiiIntermediare, Orar orar, float cost, float distanta)
+    {
+        TrenuriDisponibile = new List<Tren>();
+        StatiiIntermediare = statiiIntermediare;
+        Orar = orar;
+        TimeSpan diff= Orar.DataSosire - Orar.DataPlecare;
+        Durata = diff; 
+        Id = id;
+        Cost = cost;
+        RutaActiva = true;
+        ListaCalatori = new List<Calator>();
+        this.distanta= distanta;
     }
     
     internal TimeSpan AnulareRezervare(Calator? calator)
@@ -121,21 +140,44 @@ internal class RutaIntreDouaStatii
     {
         ListaCalatori.Add(calator);
     }
-    public void AfisareTrenuriDisponibile()
+    public void AfisareTrenuriDisponibile(int tipMoneda)
     {
         Console.WriteLine(" * Trenuri disponibile: ");
         foreach (Tren tr in TrenuriDisponibile)
         {
-            tr.AfisareTren();
+            tr.AfisareTren(tipMoneda);
         }
         Console.WriteLine("");
     }
     
-    public void AfisareDetaliiRuta()
+    public void AfisareDetaliiRuta(int tipMoneda)
     {
+        MonedaDollar d = new MonedaDollar();
+        MonedaEuro eu = new MonedaEuro();
+        MonedaLei l = new MonedaLei();
+        
         Console.Write($"  * Detalii ruta:\n  - Orar: ");
         Orar.AfisareOrar();
-        Console.WriteLine($"  - Durata: {Durata}");
+        Console.WriteLine($"  - Durata: {Durata.Days} zile, {Durata.Hours} ore, {Durata.Minutes} minute.");
+        Console.WriteLine($"  - Distanta: {distanta} km");
+        if (tipMoneda == 0)
+        {
+            Console.WriteLine($"  - Cost: {eu.MonedaStr(Cost)}");
+        }
+        else
+        {
+            if (tipMoneda == 1)
+            {
+                Console.WriteLine($"  - Cost: {l.MonedaStr(Cost)}");
+            }
+            else
+            {
+                if (tipMoneda == 2)
+                {
+                    Console.WriteLine($"  - Cost: {d.MonedaStr(Cost)}");
+                }
+            }
+        }
     }
     
     public Tren? GasesteTrenDupaId(string id)
@@ -154,7 +196,7 @@ internal class RutaIntreDouaStatii
     public RutaIntreDouaStatii DeepCopy() 
     {
         // Se creeaza un nou obiect RutaIntreDouaStatii cu aceleasi valori pentru toate proprietatile sale, asigurandu-se ca modificarile ulterioare ale copiei nu afecteaza lista originala.
-        return new RutaIntreDouaStatii(Id, StatiiIntermediare , Orar, Durata, distanta, RutaActiva, TrenuriDisponibile, ListaCalatori);
+        return new RutaIntreDouaStatii(Id, StatiiIntermediare , Orar, distanta, RutaActiva, TrenuriDisponibile, ListaCalatori);
     }
     public List<Tren> GasesteTrenuriDupaListaId(string[] listaId)
     {

@@ -9,9 +9,14 @@ namespace Proiect_Poo
     // adauga o functie sa calculezi pretul in functie de distanta sau ceva
     internal class Tren
     {
+        private MonedaDollar _monedaDollar = new MonedaDollar();
+        private MonedaEuro _monedaEuro = new MonedaEuro();
+        private MonedaLei _monedaLei = new MonedaLei();
+        
         internal string id;
+        internal Orar OrarTren { get; set; }
         private int numarTren;
-        internal int capacitateTren = -1;
+        internal int capacitateTren = 0;
         internal int numarCalatori = 0;
         internal List<Statie> listaOpriri = new List<Statie>();
         internal float pret { get; set; }
@@ -20,12 +25,12 @@ namespace Proiect_Poo
         internal int GetNumar_tren() => numarTren;
         internal List<Vagon> GetlistaVagoane() => listaVagoane;
         internal Ruta rutaTren;
-        public Tren(string id, int numarTren)
+        
+        public Tren (string id, int numarTren)
         {
             this.id = id;
             this.numarTren = numarTren;
             listaVagoane = new List<Vagon>();
-            this.rutaTren = rutaTren;
         }
         public Tren (string id, int numarTren, Ruta rutaTren)
         {
@@ -77,9 +82,26 @@ namespace Proiect_Poo
                 }
         }
 
-        public void AfisareTren()
+        public void AfisareTren(int tipMoneda)
         {
-            Console.WriteLine($"    * Tren cu id-ul: {id}, numarul trenului: {numarTren}, capacitatea trenului: {capacitateTren}, si pretul: {pret}");
+            if (tipMoneda == 0) // euro
+            {
+                Console.WriteLine($"    * Tren cu id-ul: {id}, numarul trenului: {numarTren}, capacitatea trenului: {capacitateTren}, pretul: {_monedaEuro.MonedaStr(pret)} , numarCalatori: {numarCalatori}");
+            }
+            else
+            {
+                if (tipMoneda == 1) // lei
+                {
+                    Console.WriteLine($"    * Tren cu id-ul: {id}, numarul trenului: {numarTren}, capacitatea trenului: {capacitateTren}, pretul: {_monedaLei.MonedaStr(pret)} , numarCalatori: {numarCalatori}");
+                }
+                else
+                {
+                    if (tipMoneda == 2) // dolari
+                    {
+                        Console.WriteLine($"    * Tren cu id-ul: {id}, numarul trenului: {numarTren}, capacitatea trenului: {capacitateTren}, pretul: {_monedaDollar.MonedaStr(pret)} , numarCalatori: {numarCalatori}");
+                    }
+                }
+            }
             foreach (Vagon j in listaVagoane)
             {
                 j.AfisareVagon();
@@ -93,6 +115,7 @@ namespace Proiect_Poo
         {
             return new List<Statie>();
         }
+        
         public void rezervareLoc(int numarVagon,int numarLoc)
         {
             Vagon vagon = null;
@@ -105,8 +128,8 @@ namespace Proiect_Poo
                     break;
 
                 }
-                if(ok == false)
-                    throw new Exception($"vagonul {numarVagon} din trenul cu id ul {id} nu exista in trenul ales");
+            if(ok == false)
+                throw new Exception($"vagonul {numarVagon} din trenul cu id ul {id} nu exista in trenul ales");
 
             ok = false;
             foreach (Loc index_loc in vagon.locuri)
@@ -116,8 +139,9 @@ namespace Proiect_Poo
                     ok= true;
                     break;
                 }
-                if(ok==false)
-                    throw new Exception($"locul {numarLoc} din vagonul {numarVagon} si trenul cu id ul {id} nu exista");
+            if(ok==false)
+                throw new Exception($"locul {numarLoc} din vagonul {numarVagon} si trenul cu id ul {id} nu exista");
         }
+        
     }
 }

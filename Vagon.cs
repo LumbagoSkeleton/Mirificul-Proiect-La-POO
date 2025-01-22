@@ -41,7 +41,7 @@ namespace Proiect_Poo
     }
     internal class Vagon
     {
-        private int capacitateVagon=300;
+        private int capacitateVagon;
         internal int numarCalatori = 0;
         private int numarVagon;
         internal int numarRanduri = 0;
@@ -93,7 +93,7 @@ namespace Proiect_Poo
         }
         public void AfisareVagon()
         {
-            Console.WriteLine($"* Vagon cu capacitatea: {capacitateVagon}, numarulul vagonului: {numarVagon}, clasa: {clasa}, numarRanduri: {numarRanduri}, numarLocuriPeRand: {numarLocuriPeRand}");
+            Console.WriteLine($"* Vagon cu capacitatea: {capacitateVagon}, numarulul vagonului: {numarVagon}, clasa: {clasa}, numarRanduri: {numarRanduri}, numarLocuriPeRand: {numarLocuriPeRand}, , numarCalatori: {numarCalatori}");
         }
     }
 }
